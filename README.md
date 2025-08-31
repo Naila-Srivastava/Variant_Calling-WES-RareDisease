@@ -44,41 +44,42 @@ This dataset (SRR18395025) from the Sri Lanka Rare Disease Project provides Whol
 
 # Example commands
 
-`fastq-dump --split-files --gzip -X 100000 SRRxxxxxxx     # Adjust the subset read counts`
+```bash
+fastq-dump --split-files --gzip -X 100000 SRRxxxxxxx     # Adjust the subset read counts
 
-`fastqc SRRxxxxxxxx_*.fastq.gz
-multiqc .`
+fastqc SRRxxxxxxxx_*.fastq.gz
+multiqc .
 
-`trimmomatic PE -threads 4 -phred33 \
+trimmomatic PE -threads 4 -phred33 \
 SRRxxxxxxxx_1.fastq.gz SRRxxxxxxxx_2.fastq.gz \
 SRRxxxxxxxx_1_paired.fq.gz SRRxxxxxxxx_1_unpaired.fq.gz \
 SRRxxxxxxxx_2_paired.fq.gz SRRxxxxxxxx_2_unpaired.fq.gz \
 ILLUMINACLIP:$CONDA_PREFIX/share/trimmomatic/adapters/TruSeq3-PE.fa:2:30:10 \
-LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36`
+LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
 
-`bwa mem -t 4 hg38.fa SRRxxxxxxxx_1.fastq SRRxxxxxxxx_2.fastq > SRRxxxxxxxx_aligned.sam`
+bwa mem -t 4 hg38.fa SRRxxxxxxxx_1.fastq SRRxxxxxxxx_2.fastq > SRRxxxxxxxx_aligned.sam
 
-`samtools view -Sb SRRxxxxxxxx_aligned.sam > SRRxxxxxxxx_aligned.bam
-samtools sort SRRxxxxxxxx_aligned.bam -o SRRxxxxxxxx_sorted.bam`
+samtools view -Sb SRRxxxxxxxx_aligned.sam > SRRxxxxxxxx_aligned.bam
+samtools sort SRRxxxxxxxx_aligned.bam -o SRRxxxxxxxx_sorted.bam
 
-`picard MarkDuplicates \
+picard MarkDuplicates \
 I=SRRxxxxxxxx_sorted.bam \
 O=SRRxxxxxxxx_dedup.bam \
-M=SRRxxxxxxxx_dedup.metrics.txt`
+M=SRRxxxxxxxx_dedup.metrics.txt
 
-`gatk CreateSequenceDictionary -R hg38.fa     # Create a seq dictionary (1 per reference)
+gatk CreateSequenceDictionary -R hg38.fa     # Create a seq dictionary (1 per reference)
 gatk HaplotypeCaller \                        # Call variants
     -R hg38.fa \
     -I SRRxxxxxxxx_dedup.bam \
-    -O SRRxxxxxxxx_gatk_variants.vcf.gz`
+    -O SRRxxxxxxxx_gatk_variants.vcf.gz
 
-`vep -i SRRxxxxxxxx_gatk_variants.vcf.gz -o SRRxxxxxxxx_vep_annotated.vcf --cache --offline --assembly GRCh38`
-
+vep -i SRRxxxxxxxx_gatk_variants.vcf.gz -o SRRxxxxxxxx_vep_annotated.vcf --cache --offline --assembly GRCh38
+```
 ---
 
 ### Methodology
 
-![Workflow](<img width="263" height="921" alt="image" src="https://github.com/user-attachments/assets/769ff303-ab47-48e8-b103-236178f2282a" />)
+<img width="263" height="921" alt="image" src="https://github.com/user-attachments/assets/769ff303-ab47-48e8-b103-236178f2282a" />
 
 ---
 
@@ -106,13 +107,13 @@ gatk HaplotypeCaller \                        # Call variants
 * **FastQC + MultiQC reports**
   * Sequencing quality, GC content, adapter content
 
-![General Stats](<img width="1401" height="270" alt="image" src="https://github.com/user-attachments/assets/00c6f110-8f82-4fbb-8f3d-28c97644253d" />)
+<img width="1401" height="270" alt="image" src="https://github.com/user-attachments/assets/00c6f110-8f82-4fbb-8f3d-28c97644253d" />
 
-![Sequencing Quality](<img width="1398" height="653" alt="image" src="https://github.com/user-attachments/assets/8c476196-3cc9-4efc-987c-a85de949253b" />)
+<img width="1398" height="653" alt="image" src="https://github.com/user-attachments/assets/8c476196-3cc9-4efc-987c-a85de949253b" />
 
-![GC Content](<img width="1390" height="572" alt="image" src="https://github.com/user-attachments/assets/b86c1c36-700f-4315-b5b5-432d9683893d" />)
+<img width="1390" height="572" alt="image" src="https://github.com/user-attachments/assets/b86c1c36-700f-4315-b5b5-432d9683893d" />
 
-![Adapter Content](<img width="1386" height="607" alt="image" src="https://github.com/user-attachments/assets/8e73f395-6384-4890-95ad-35aca1aed240" />)
+<img width="1386" height="607" alt="image" src="https://github.com/user-attachments/assets/8e73f395-6384-4890-95ad-35aca1aed240" />
 
 * **Alignment stats**
   * % mapped reads, coverage
