@@ -1,13 +1,12 @@
 # Variant Calling Pipeline for WES in Rare Disease
 
+_Rare disease genomics with WES: from raw FASTQ to annotated variants_
+
 ### Project Overview
 
-This repository contains a **bioinformatics pipeline** for performing **variant calling** on Whole Exome Sequencing (WES) data from a **neonate affected by MOPD-II (a rare genetic disorder)**. The workflow demonstrates how to process raw sequencing reads, perform quality control, align to a reference genome, call variants, annotate and visualise them and generate summary reports.
-
-This project highlights how WES analysis can uncover pathogenic variants in rare diseases.
+An end-to-end **bioinformatics variant calling pipeline** for **Whole Exome Sequencing (WES) data** in **rare disease genomics**, demonstrated using a **MOPD-II neonate** case study. The WES analysis uncovers pathogenic variants in targeted rare diseases.
+The workflow demonstrates how to process raw sequencing reads, perform quality control, align to a reference genome, call variants, annotate and visualise them and generate summary reports.
 Such workflows are critical in clinical genomics, where rapid, reproducible pipelines can directly impact diagnosis and treatment.
-
-The pipeline is designed as a **generalizable workflow** for studying **rare disease genomics**, with MOPD-II used as a case study.
 
 ---
 
@@ -27,6 +26,8 @@ The pipeline is designed as a **generalizable workflow** for studying **rare dis
 
 ### Dataset
 
+This dataset (SRR18395025) from the Sri Lanka Rare Disease Project provides Whole Exome Sequencing of a neonate affected by MOPD-II, a rare genetic disorder with clinical relevance in growth and developmental pathways
+
 * **Source:** [SRA](https://www.ncbi.nlm.nih.gov/sra)
 * **Accession ID:** `SRR18395025` 
 * **Type:** Whole Exome Sequencing (WES) FASTQ files
@@ -41,44 +42,43 @@ The pipeline is designed as a **generalizable workflow** for studying **rare dis
 - Clone this repo: `git clone https://github.com/Naila-Srivastava/Variant_Calling-WES-RareDisease.git`
                  cd `Variant_Calling-WES-RareDisease`
 
-```bash
 # Example commands
 
-fastq-dump --split-files --gzip -X 100000 SRRxxxxxxx     # Adjust the subset read counts
+`fastq-dump --split-files --gzip -X 100000 SRRxxxxxxx     # Adjust the subset read counts`
 
-fastqc SRRxxxxxxxx_*.fastq.gz
-multiqc .
+`fastqc SRRxxxxxxxx_*.fastq.gz
+multiqc .`
 
-trimmomatic PE -threads 4 -phred33 \
+`trimmomatic PE -threads 4 -phred33 \
 SRRxxxxxxxx_1.fastq.gz SRRxxxxxxxx_2.fastq.gz \
 SRRxxxxxxxx_1_paired.fq.gz SRRxxxxxxxx_1_unpaired.fq.gz \
 SRRxxxxxxxx_2_paired.fq.gz SRRxxxxxxxx_2_unpaired.fq.gz \
 ILLUMINACLIP:$CONDA_PREFIX/share/trimmomatic/adapters/TruSeq3-PE.fa:2:30:10 \
-LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36`
 
-bwa mem -t 4 hg38.fa SRRxxxxxxxx_1.fastq SRRxxxxxxxx_2.fastq > SRRxxxxxxxx_aligned.sam
+`bwa mem -t 4 hg38.fa SRRxxxxxxxx_1.fastq SRRxxxxxxxx_2.fastq > SRRxxxxxxxx_aligned.sam`
 
-samtools view -Sb SRRxxxxxxxx_aligned.sam > SRRxxxxxxxx_aligned.bam
-samtools sort SRRxxxxxxxx_aligned.bam -o SRRxxxxxxxx_sorted.bam
+`samtools view -Sb SRRxxxxxxxx_aligned.sam > SRRxxxxxxxx_aligned.bam
+samtools sort SRRxxxxxxxx_aligned.bam -o SRRxxxxxxxx_sorted.bam`
 
-picard MarkDuplicates \
+`picard MarkDuplicates \
 I=SRRxxxxxxxx_sorted.bam \
 O=SRRxxxxxxxx_dedup.bam \
-M=SRRxxxxxxxx_dedup.metrics.txt
+M=SRRxxxxxxxx_dedup.metrics.txt`
 
-gatk CreateSequenceDictionary -R hg38.fa     # Create a seq dictionary (1 per reference)
-gatk HaplotypeCaller \                       # Call variants
+`gatk CreateSequenceDictionary -R hg38.fa     # Create a seq dictionary (1 per reference)
+gatk HaplotypeCaller \                        # Call variants
     -R hg38.fa \
     -I SRRxxxxxxxx_dedup.bam \
-    -O SRRxxxxxxxx_gatk_variants.vcf.gz
+    -O SRRxxxxxxxx_gatk_variants.vcf.gz`
 
-vep -i SRRxxxxxxxx_gatk_variants.vcf.gz -o SRRxxxxxxxx_vep_annotated.vcf --cache --offline --assembly GRCh38
-```
+`vep -i SRRxxxxxxxx_gatk_variants.vcf.gz -o SRRxxxxxxxx_vep_annotated.vcf --cache --offline --assembly GRCh38`
+
 ---
 
 ### Methodology
 
-<img width="263" height="921" alt="image" src="https://github.com/user-attachments/assets/769ff303-ab47-48e8-b103-236178f2282a" />
+![Workflow](<img width="263" height="921" alt="image" src="https://github.com/user-attachments/assets/769ff303-ab47-48e8-b103-236178f2282a" />)
 
 ---
 
@@ -105,6 +105,15 @@ vep -i SRRxxxxxxxx_gatk_variants.vcf.gz -o SRRxxxxxxxx_vep_annotated.vcf --cache
 
 * **FastQC + MultiQC reports**
   * Sequencing quality, GC content, adapter content
+
+![General Stats](<img width="1401" height="270" alt="image" src="https://github.com/user-attachments/assets/00c6f110-8f82-4fbb-8f3d-28c97644253d" />)
+
+![Sequencing Quality](<img width="1398" height="653" alt="image" src="https://github.com/user-attachments/assets/8c476196-3cc9-4efc-987c-a85de949253b" />)
+
+![GC Content](<img width="1390" height="572" alt="image" src="https://github.com/user-attachments/assets/b86c1c36-700f-4315-b5b5-432d9683893d" />)
+
+![Adapter Content](<img width="1386" height="607" alt="image" src="https://github.com/user-attachments/assets/8e73f395-6384-4890-95ad-35aca1aed240" />)
+
 * **Alignment stats**
   * % mapped reads, coverage
 * **Variant files**
@@ -134,15 +143,15 @@ vep -i SRRxxxxxxxx_gatk_variants.vcf.gz -o SRRxxxxxxxx_vep_annotated.vcf --cache
 
 ### References
 
-* EBI ENA: https://www.ebi.ac.uk/ena/browser/
-* FastQC: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
-* MultiQC: https://multiqc.info/
-* Trimmomatic: http://www.usadellab.org/cms/?page=trimmomatic
-* BWA-MEM: http://bio-bwa.sourceforge.net/
-* Samtools: https://www.htslib.org/
-* Picard: https://broadinstitute.github.io/picard/
-* GATK HaplotypeCaller: https://gatk.broadinstitute.org/
-* VEP: https://useast.ensembl.org/info/docs/tools/vep/index.html
+* [EBI ENA](https://www.ebi.ac.uk/ena/browser/)
+* [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+* [MultiQC](https://multiqc.info/)
+* [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)
+* [BWA-MEM](http://bio-bwa.sourceforge.net/)
+* [Samtools](https://www.htslib.org/)
+* [Picard](https://broadinstitute.github.io/picard/)
+* [GATK HaplotypeCaller](https://gatk.broadinstitute.org/)
+* [VEP](https://useast.ensembl.org/info/docs/tools/vep/index.html)
 
 ---
 
