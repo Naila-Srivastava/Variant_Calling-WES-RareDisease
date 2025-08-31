@@ -42,7 +42,7 @@ This dataset (SRR18395025) from the Sri Lanka Rare Disease Project provides Whol
 - Clone this repo: `git clone https://github.com/Naila-Srivastava/Variant_Calling-WES-RareDisease.git`
                  cd `Variant_Calling-WES-RareDisease`
 
-# Example commands
+#### Example commands
 
 ```bash
 fastq-dump --split-files --gzip -X 100000 SRRxxxxxxx     # Adjust the subset read counts
