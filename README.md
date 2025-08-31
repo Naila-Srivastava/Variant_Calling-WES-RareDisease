@@ -71,6 +71,8 @@ gatk HaplotypeCaller \                       # Call variants
     -R hg38.fa \
     -I SRRxxxxxxxx_dedup.bam \
     -O SRRxxxxxxxx_gatk_variants.vcf.gz
+
+vep -i SRRxxxxxxxx_gatk_variants.vcf.gz -o SRRxxxxxxxx_vep_annotated.vcf --cache --offline --assembly GRCh38
 ```
 ---
 
@@ -82,11 +84,11 @@ gatk HaplotypeCaller \                       # Call variants
 
 ### Features
 
-1. End-to-end workflow: from raw reads to annotated VCF.
+1. **End-to-end workflow:** From raw reads to annotated VCF.
 2. Automated QC reporting using FastQC + MultiQC.
-3. Rare disease relevance: pipeline tailored for rare phenotype exploration.
-4. Reproducibility: modular scripts for easy reuse across datasets.
-5. Organized repo: clear separation of data, scripts, results, and reports.
+3. **Rare disease relevance:** Pipeline tailored for rare phenotype exploration.
+4. **Reproducibility:** Modular scripts for easy reuse across datasets.
+5. **Organised repo:** Clear separation of data, scripts, results, and reports.
 
 ---
 
