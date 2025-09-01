@@ -116,12 +116,15 @@ vep -i SRRxxxxxxxx_gatk_variants.vcf.gz -o SRRxxxxxxxx_vep_annotated_online.vcf 
 
 <img width="1386" height="607" alt="image" src="https://github.com/user-attachments/assets/8e73f395-6384-4890-95ad-35aca1aed240" />
 
-* **Alignment stats**
-  * % mapped reads, coverage
-* **Variant files**
-  * Raw and filtered VCF files
-* **Rare variants identified**
-  * Highlight potential pathogenic variants linked to MOPD-II
+* **Rare variants identified**: From a total of ~16,250 variants annotated with Ensembl VEP, filtering based on predicted impact (missense, splice-site, nonsense) and computational pathogenicity predictions (SIFT and PolyPhen) resulted in a shortlist of candidate variants of interest.
+  
+  * Most retained variants are missense mutations with predicted moderate impact.
+  * Several variants were consistently annotated as deleterious (SIFT) and probably damaging (PolyPhen), highlighting their potential functional significance.
+  * Key affected genes include **MMP23B, CFAP74, PRDM16, CHD5, RNF207, PLEKHG5, DNAJC11, EXOSC10, C1orf167, CLCN6, NPPA, VPS13D**, among others.
+  * No strong ClinVar pathogenic annotations were detected in this subset (which might indicate that variants may still be novel).
+
+Summary:
+The integration of functional consequence, in silico prediction, and allele effect prioritization identified a set of candidate variants likely to have biological relevance and warrant further investigation.
 
 ---
 
