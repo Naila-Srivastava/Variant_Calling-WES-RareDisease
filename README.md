@@ -73,7 +73,8 @@ gatk HaplotypeCaller \                        # Call variants
     -I SRRxxxxxxxx_dedup.bam \
     -O SRRxxxxxxxx_gatk_variants.vcf.gz
 
-vep -i SRRxxxxxxxx_gatk_variants.vcf.gz -o SRRxxxxxxxx_vep_annotated.vcf --cache --offline --assembly GRCh38
+vep -i SRRxxxxxxxx_gatk_variants.vcf.gz -o SRRxxxxxxxx_vep_annotated_online.vcf \
+  --assembly GRCh38 --everything --database
 ```
 ---
 
