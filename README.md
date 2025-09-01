@@ -20,8 +20,6 @@ Such workflows are critical in clinical genomics, where rapid, reproducible pipe
 * **Samtools and Picard** (for BAM processing)
 * **GATK** (for variant calling)
 * **VEP** (for variant annotation)
-* **IGV** (for visualisation)
-
 ---
 
 ### Dataset
@@ -165,7 +163,7 @@ The integration of functional consequence, in silico prediction, and allele effe
 ```plaintext
 variant_calling-WES-RareDisease/
 │── data/               # FASTQ and reference files (not uploaded due to size)  
-│── scripts/            # Bash scripts for each step of the pipeline  
-│── results/            # Output files (BAM, VCF, reports)  
+│── scripts/            # Scripts for each step of the pipeline  
+│── results/            # Output files 
 │── reports/            # MultiQC & FastQC HTML reports  
 │── README.md           # Project documentation (this file)  
