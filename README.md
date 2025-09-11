@@ -66,7 +66,7 @@ O=SRRxxxxxxxx_dedup.bam \
 M=SRRxxxxxxxx_dedup.metrics.txt
 
 gatk CreateSequenceDictionary -R hg38.fa     # Create a seq dictionary (1 per reference)
-gatk HaplotypeCaller \                        # Call variants
+gatk HaplotypeCaller \                       # Call variants
     -R hg38.fa \
     -I SRRxxxxxxxx_dedup.bam \
     -O SRRxxxxxxxx_gatk_variants.vcf.gz
