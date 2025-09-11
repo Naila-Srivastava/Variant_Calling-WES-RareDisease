@@ -74,6 +74,22 @@ gatk HaplotypeCaller \                       # Call variants
 vep -i SRRxxxxxxxx_gatk_variants.vcf.gz -o SRRxxxxxxxx_vep_annotated_online.vcf \
   --assembly GRCh38 --everything --database
 ```
+
+#### Example command of submitting a FastQC job to an HPC cluster using Slurm
+
+```
+#!/bin/bash
+#SBATCH --job-name=fastqc_job
+#SBATCH --output=fastqc_out.txt
+#SBATCH --time=01:00:00
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=8G
+
+module load fastqc
+fastqc SRRxxxxxxxx.fastq -o ./results/
+```
+
 ---
 
 ### Methodology
